@@ -21,13 +21,17 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-  private void OnTriggerEnter(Collider other)
-{
-    if (!other.CompareTag("Player"))
+    private void OnTriggerEnter(Collider other)
     {
-            Instantiate(destroyParticle, ParticleSpawn.transform.position, other.transform.rotation);    
-        Destroy(gameObject);
+        if (!other.CompareTag("Player"))
+        {
+
+            if (!other.CompareTag("Target"))
+            {
+                Instantiate(destroyParticle, ParticleSpawn.transform.position, other.transform.rotation);
+            }
+            Destroy(gameObject);
+        }
     }
-}
 
 }

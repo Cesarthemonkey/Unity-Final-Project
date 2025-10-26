@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ShootPoint
   - FxTemporaire
+  - Projectile
+  - Target
   layers:
   - Default
   - TransparentFX
