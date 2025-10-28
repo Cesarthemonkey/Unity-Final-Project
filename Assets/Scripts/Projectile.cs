@@ -25,12 +25,16 @@ public class Projectile : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
         {
-
+            Destroy(gameObject);
             if (!other.CompareTag("Target"))
             {
+                GameManager.Instance.resetStreak();
                 Instantiate(destroyParticle, ParticleSpawn.transform.position, other.transform.rotation);
             }
-            Destroy(gameObject);
+            else
+            {
+                GameManager.Instance.updateStreak();
+            }
         }
     }
 

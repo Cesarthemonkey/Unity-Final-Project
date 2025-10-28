@@ -8,10 +8,15 @@ public class BadTarget : Target
     public override void HideGameObjects()
     {
         base.HideGameObjects();
-        
+
         if (image)
         {
             image.SetActive(false);
         }
+    }
+    
+    public override void UpdateStreak()
+    {
+        GameManager.Instance.resetStreak();
     }
 }

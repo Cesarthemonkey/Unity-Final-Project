@@ -98,6 +98,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 870723046189320344, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 870723046189320344, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 870723046189320344, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 870723046189320344, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190335
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018227591292097876, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 2.1555
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018227591292097876, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.7185
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018227591292097876, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018227591292097876, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018227591292097876, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6166790138710930483, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
       propertyPath: image
       value: 
@@ -184,7 +220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   DestroyParticle: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
-  ScoreText: {fileID: 5984043487220096109}
   destroySounds:
   - {fileID: 8300000, guid: c01bbab8442e45146be860df82582360, type: 3}
   - {fileID: 8300000, guid: 879e730a6ca97ae4898f59711107f5eb, type: 3}
@@ -194,11 +229,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7acc8ace4a733cc4eb94910f5e1a84ed, type: 3}
   points: -50
   image: {fileID: 1830211232297557071}
---- !u!1 &5984043487220096109 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7471753086121435106, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
-  m_PrefabInstance: {fileID: 3799745062167643023}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6631689207435611410 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7544398205424881309, guid: 221eb511aac2ed748995d2e90165f542, type: 3}

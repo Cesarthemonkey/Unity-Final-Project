@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5209397748590564546}
   m_Layer: 0
   m_Name: Skull
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -128,7 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Target
   DestroyParticle: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
-  ScoreText: {fileID: 931467884271905084}
   destroySounds:
   - {fileID: 8300000, guid: c01bbab8442e45146be860df82582360, type: 3}
   points: 10
@@ -330,11 +329,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6ca4dbe6312be743b5437ef1794c625, type: 3}
---- !u!1 &931467884271905084 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8448440078951296205, guid: c6ca4dbe6312be743b5437ef1794c625, type: 3}
-  m_PrefabInstance: {fileID: 8778604630451324401}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4809603349344936842 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4282072936352671355, guid: c6ca4dbe6312be743b5437ef1794c625, type: 3}

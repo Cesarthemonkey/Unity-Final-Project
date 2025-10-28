@@ -7,22 +7,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     
     [SerializeField] private float maxShootDistance = 100f;
-    private float nextFireTime = 0f;
     public float fireRate = 2f;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && GameManager.Instance.gameActive)
         {
-
-            // if (Time.time >= nextFireTime)
-            // {
-
-                Shoot();
-
-            //     nextFireTime = Time.time + fireRate;
-
-            // }
+            Shoot();
         }
     }
 

@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using NUnit.Framework.Interfaces;
 
 public class Target : MonoBehaviour
 {
@@ -34,8 +33,9 @@ public class Target : MonoBehaviour
         }
     }
 
-    private void HitTarget()
+    public virtual void HitTarget()
     {
+        UpdateStreak();
         ShowVFX();
         GameManager.Instance.updateScore(points);
         DisplayPoints();
@@ -56,7 +56,15 @@ public class Target : MonoBehaviour
         }
         else
         {
-            ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString();
+
+            if(GameManager.Instance.streak > 1)
+            {
+                ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString() + " x" + GameManager.Instance.streak.ToString();
+            } else
+            {
+                ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString();
+            }
+        
         }
         ScoreText.SetActive(true);
     }
@@ -66,11 +74,13 @@ public class Target : MonoBehaviour
         meshRenderer.enabled = false;
         meshCollider.enabled = false;
     }
-    
+
     private void ShowVFX()
     {
         targetAudio.PlayOneShot(destroySounds[Random.Range(0, destroySounds.Length)], 1.0f);
         Instantiate(DestroyParticle, transform.position, transform.rotation);
     }
+    
+    public virtual void UpdateStreak(){}
 
 }
