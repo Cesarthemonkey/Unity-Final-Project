@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_fontColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6166790138710930483, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: points
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 7544398205424881309, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

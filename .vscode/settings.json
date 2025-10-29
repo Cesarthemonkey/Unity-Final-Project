@@ -66,5 +66,8 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
     },
-    "dotnet.defaultSolution": "Unity-Final-Project.sln"
+    "dotnet.defaultSolution": "Unity-Final-Project.sln",
+    "cSpell.words": [
+        "respawn"
+    ]
 }

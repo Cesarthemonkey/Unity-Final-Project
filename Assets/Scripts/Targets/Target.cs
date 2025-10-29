@@ -11,11 +11,16 @@ public class Target : MonoBehaviour
 
     [SerializeField]
     private int points;
-
     protected MeshRenderer meshRenderer;
     protected MeshCollider meshCollider;
     protected AudioSource targetAudio;
     protected GameObject ScoreText;
+
+    private TargetWayPoint currentWayPoint;
+
+    private int speed = 5;
+
+     private bool hit = false;
 
     void Start()
     {
@@ -25,6 +30,10 @@ public class Target : MonoBehaviour
         ScoreText = transform.Find("ScoreText").gameObject;
     }
 
+    void Update()
+    {
+        MoveTowardsWayPoint();
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Projectile"))
@@ -35,13 +44,14 @@ public class Target : MonoBehaviour
 
     public virtual void HitTarget()
     {
+        hit = true;
         UpdateStreak();
         ShowVFX();
         GameManager.Instance.updateScore(points);
         DisplayPoints();
         HideGameObjects();
         DestroyTarget();
-    }         
+    }
 
     private void DestroyTarget()
     {
@@ -57,14 +67,15 @@ public class Target : MonoBehaviour
         else
         {
 
-            if(GameManager.Instance.streak > 1)
+            if (GameManager.Instance.streak > 1)
             {
                 ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString() + " x" + GameManager.Instance.streak.ToString();
-            } else
+            }
+            else
             {
                 ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString();
             }
-        
+
         }
         ScoreText.SetActive(true);
     }
@@ -80,7 +91,42 @@ public class Target : MonoBehaviour
         targetAudio.PlayOneShot(destroySounds[Random.Range(0, destroySounds.Length)], 1.0f);
         Instantiate(DestroyParticle, transform.position, transform.rotation);
     }
-    
-    public virtual void UpdateStreak(){}
+
+    public void SetWayPoint(TargetWayPoint waypoint)
+    {
+        currentWayPoint = waypoint;
+    }
+
+    public void MoveTowardsWayPoint()
+    {
+        if (currentWayPoint == null) return;
+
+        Vector3 direction = (currentWayPoint.transform.position - transform.position).normalized;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // transform.rotation = Quaternion.RotateTowards(
+        //     transform.rotation,
+        //     targetRotation,
+        //     rotationSpeed * Time.deltaTime
+        // );
+
+        // float angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+        // if (angle <= 0.01f)
+        // {
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            currentWayPoint.transform.position,
+            speed * Time.deltaTime
+        );
+
+        if (Vector3.Distance(transform.position, currentWayPoint.transform.position) < 0.1f && !hit)
+        {
+            currentWayPoint = currentWayPoint.GetNextMoveWayPoint(this);
+        }
+        // }
+    }
+    public virtual void UpdateStreak() { }
 
 }

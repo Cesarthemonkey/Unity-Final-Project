@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public int streak;
     public int startTime;
     public bool gameActive = false;
+
+    public int level = 0;
     private void Awake()
     {
         if (Instance != null)
@@ -21,21 +23,19 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        // end of new code
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        level = 0;
         score = 0;
         streak = 0;
         StartCoroutine(InitializeGame());
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -65,6 +65,12 @@ public class GameManager : MonoBehaviour
         streak++;
     }
 
+    public void StartNextLevel()
+    {
+        level++;
+        levels[level].InitializeLevel();
+    }
+
     IEnumerator InitializeGame()
     {
         GameInfoController.Instance.centerCountDown.gameObject.SetActive(true);
@@ -72,7 +78,6 @@ public class GameManager : MonoBehaviour
 
         while (startTime > 0)
         {
-            Debug.Log(startTime);
             GameInfoController.Instance.centerCountDown.text = startTime.ToString();
             yield return new WaitForSeconds(1f);
 
@@ -83,7 +88,7 @@ public class GameManager : MonoBehaviour
         gameActive = true;
         GameInfoController.Instance.centerCountDown.gameObject.SetActive(false);
 
-        levels[0].StartLevel();
+        levels[level].InitializeLevel();
     }
 
 }

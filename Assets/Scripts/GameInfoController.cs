@@ -20,12 +20,10 @@ public class GameInfoController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         Instance = this;
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         
