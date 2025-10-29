@@ -101,20 +101,6 @@ public class Target : MonoBehaviour
     {
         if (currentWayPoint == null) return;
 
-        Vector3 direction = (currentWayPoint.transform.position - transform.position).normalized;
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        // transform.rotation = Quaternion.RotateTowards(
-        //     transform.rotation,
-        //     targetRotation,
-        //     rotationSpeed * Time.deltaTime
-        // );
-
-        // float angle = Quaternion.Angle(transform.rotation, targetRotation);
-
-        // if (angle <= 0.01f)
-        // {
         transform.position = Vector3.MoveTowards(
             transform.position,
             currentWayPoint.transform.position,
@@ -125,7 +111,6 @@ public class Target : MonoBehaviour
         {
             currentWayPoint = currentWayPoint.GetNextMoveWayPoint(this);
         }
-        // }
     }
     public virtual void UpdateStreak() { }
 

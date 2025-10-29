@@ -102,5 +102,15 @@ public abstract class TargetSpawner : MonoBehaviour
     {
         SpawnNextRoundOfTargets();
     }
+    public void KillSpawner()
+    {
+        spawnerActive = false;
+        Target[] allTargets = transform.GetComponentsInChildren<Target>();
+        StopAllCoroutines();
+        foreach (Target target in allTargets)
+        {
+            Destroy(target.gameObject);
+        }
+    }
 
 }

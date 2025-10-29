@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     public void StartNextLevel()
     {
+        levels[level].StopLevel();
         level++;
         levels[level].InitializeLevel();
     }

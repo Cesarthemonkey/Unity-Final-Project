@@ -9,7 +9,6 @@ public class TargetSpawnerMoving : TargetSpawner
     private int numberOfTargetsPerSpawnWave = 0;
     [SerializeField] private GameObject spawnLocation;
     [SerializeField] private TargetWayPoint[] targetWayPoints;
-    [SerializeField] private List<Target> currentTargets = new List<Target>();
     [SerializeField] private float spawnDelay;
 
     private Queue<Target> respawnQueue;
@@ -22,10 +21,11 @@ public class TargetSpawnerMoving : TargetSpawner
     }
     public override void SpawnTargets()
     {
+        StopAllCoroutines();
+            
         if (spawnQueue.Count > 0)
         {
             respawnQueue = new Queue<Target>();
-            currentTargets = new List<Target>();
             StartCoroutine(SpawnTargetsEveryXSeconds());
         }
         else
@@ -38,12 +38,11 @@ public class TargetSpawnerMoving : TargetSpawner
     {
         int targetsToSpawn = numberOfTargetsPerSpawnWave;
 
-        while (targetsToSpawn > 0)
+        while (targetsToSpawn > 0 && spawnQueue.Count > 0)
         {
             Target nextTarget = spawnQueue.Dequeue();
             Target spawnedTarget = Instantiate(nextTarget, spawnLocation.transform.position, spawnLocation.transform.rotation, transform);
             spawnedTarget.SetWayPoint(targetWayPoints[0]);
-            currentTargets.Add(spawnedTarget);
             yield return new WaitForSeconds(spawnDelay);
 
             targetsToSpawn--;
@@ -72,10 +71,10 @@ public class TargetSpawnerMoving : TargetSpawner
         if (respawnQueue.Count == transform.GetComponentsInChildren<Target>().Length)
         {
             RespawnAllTargets();
-        } 
-        
-         base.UpdateTargetSpawner();
-        
+        }
+
+        base.UpdateTargetSpawner();
+
     }
 
     private void RespawnAllTargets()
@@ -89,7 +88,7 @@ public class TargetSpawnerMoving : TargetSpawner
         respawnQueue = new Queue<Target>();
         int targetsToReSpawn = tempQueue.Count;
 
-        while (targetsToReSpawn > 0)
+        while (targetsToReSpawn > 0 && tempQueue.Count > 0)
         {
             Target target = tempQueue.Dequeue();
             target.SetWayPoint(targetWayPoints[0]);

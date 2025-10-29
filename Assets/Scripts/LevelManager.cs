@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -22,15 +21,6 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private TargetSpawner[] spawners;
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-
-    }
 
     public void InitializeLevel()
     {
@@ -87,7 +77,7 @@ public class LevelManager : MonoBehaviour
 
         return waypoints[currentWayPoint];
     }
-    
+
     public void StartNextSpawner()
     {
         if (levelNumber == spawners.Length - 1)
@@ -101,5 +91,14 @@ public class LevelManager : MonoBehaviour
 
         spawners[levelNumber].StartSpawner();
     } 
+    
+    public void StopLevel()
+    {
+
+        if(spawners.Length > 0)
+        {
+            spawners[levelNumber].KillSpawner();
+        }
+    }
 
 }

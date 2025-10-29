@@ -2353,7 +2353,7 @@ MonoBehaviour:
   - {fileID: 1629357116}
   score: 0
   streak: 0
-  startTime: 0
+  startTime: 3
   gameActive: 0
   level: 0
 --- !u!4 &674697009
@@ -2535,7 +2535,7 @@ MonoBehaviour:
   playerCamera: {fileID: 330585545}
   maxShootDistance: 100
   currentWayPoint: {fileID: 0}
-  speed: 100
+  speed: 2
   rotationSpeed: 40
 --- !u!136 &732349289
 CapsuleCollider:
@@ -5068,7 +5068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf8fe00202fc084888a8df43ca8d9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  duration: 1
+  duration: 10
   levelName: Training
   waypoints: []
   player: {fileID: 732349288}
@@ -6161,11 +6161,11 @@ MonoBehaviour:
   - {fileID: 1314038243}
   player: {fileID: 732349288}
   spawners:
-  - {fileID: 470421528}
-  - {fileID: 1092030410}
   - {fileID: 865129846}
   - {fileID: 605022925}
   - {fileID: 1670917797}
+  - {fileID: 470421528}
+  - {fileID: 1092030410}
 --- !u!4 &1629357117
 Transform:
   m_ObjectHideFlags: 0
