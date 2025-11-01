@@ -1,6 +1,4 @@
-using UnityEngine;
-
-public class TargetWayPoint : MonoBehaviour
+public class TargetWayPoint : MoveWayPoint
 {
     public TargetSpawnerMoving targetSpawner;
     void Start()

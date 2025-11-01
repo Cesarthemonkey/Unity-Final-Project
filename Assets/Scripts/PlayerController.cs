@@ -41,15 +41,19 @@ public class PlayerController : MonoBehaviour
 
        Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
     }
-
     public void MoveTowardsWayPoint()
     {
         if (currentWayPoint == null || isFrozen) return;
 
-        Vector3 direction = (currentWayPoint.transform.position - transform.position).normalized;
+        // Keep player's Y position fixed
+        Vector3 targetPosition = currentWayPoint.transform.position;
+        targetPosition.y = transform.position.y;
 
+        // Direction ignoring Y
+        Vector3 direction = (targetPosition - transform.position).normalized;
+
+        // Rotate towards the target
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             targetRotation,
@@ -58,20 +62,23 @@ public class PlayerController : MonoBehaviour
 
         float angle = Quaternion.Angle(transform.rotation, targetRotation);
 
-        if (angle <= 0.01f)
+        if (angle <= 0)
         {
-            transform.position = Vector3.MoveTowards(
+                transform.rotation = targetRotation;
+                transform.position = Vector3.MoveTowards(
                 transform.position,
-                currentWayPoint.transform.position,
+                targetPosition,
                 speed * Time.deltaTime
             );
 
-            if (Vector3.Distance(transform.position, currentWayPoint.transform.position) < 0.1f)
+            // Check distance using the flattened position
+            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 currentWayPoint = currentWayPoint.GetNextMoveWayPoint();
             }
         }
     }
+
 
     public void Freeze(float time)
     {

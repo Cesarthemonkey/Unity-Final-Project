@@ -5,6 +5,11 @@ public class TargetSpawnerBasic : TargetSpawner
 
     [SerializeField]
     private GameObject[] TargetSpawnLocations;
+    
+   [SerializeField]
+    private bool RandomSpawns = false;
+
+
     void Start()
     {
         SetNumberOfTargetsPerSpawnWave(TargetSpawnLocations.Length);
