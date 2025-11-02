@@ -74,6 +74,7 @@ public class LevelManager : MonoBehaviour
                 if (spawners != null && spawners.Length > 0)
                 {
                     spawners[spawnerIndex].KillSpawner();
+                    spawnerIndex++;
                 }
             }
 
@@ -174,19 +175,20 @@ public class LevelManager : MonoBehaviour
             return null;
         }
 
-        levelAreaIndex++;
+        LevelWayPoint currentWayPoint = levelWayPoints[levelAreaIndex];
 
-        LevelWayPoint nextWaypoint = levelWayPoints[levelAreaIndex];
-        Debug.Log($"[LevelManager] Advancing to Level WayPoint #{levelAreaIndex}: {nextWaypoint.name}");
-
-        if (nextWaypoint.isTargetSpawnArea)
+        if (currentWayPoint.isTargetSpawnArea)
         {
+            levelAreaIndex++;
+            spawners[spawnerIndex].StartSpawner();
             Debug.Log($"[LevelManager] Waypoint is a spawn area — resuming timer and skipping direct movement.");
             pauseTimer = false;
             return null;
         }
 
-        pauseTimer = false;
+        levelAreaIndex++;
+        LevelWayPoint nextWaypoint = levelWayPoints[levelAreaIndex];
+        Debug.Log($"[LevelManager] Advancing to Level WayPoint #{levelAreaIndex}: {nextWaypoint.name}");
         return nextWaypoint;
     }
 

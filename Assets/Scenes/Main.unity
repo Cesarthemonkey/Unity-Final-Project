@@ -4619,7 +4619,7 @@ MonoBehaviour:
   playerCamera: {fileID: 330585545}
   maxShootDistance: 100
   currentWayPoint: {fileID: 0}
-  speed: 20
+  speed: 10
   rotationSpeed: 40
 --- !u!136 &732349289
 CapsuleCollider:
@@ -9178,6 +9178,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1980045822}
     m_Modifications:
+    - target: {fileID: 5736245692635810991, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7544398205424881309, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9221,6 +9225,10 @@ PrefabInstance:
     - target: {fileID: 8222527443757445304, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
       propertyPath: m_Name
       value: MainTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 8530673042862257304, guid: 221eb511aac2ed748995d2e90165f542, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
