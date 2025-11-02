@@ -3,158 +3,208 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-
+    [Header("Level Settings")]
     public int duration;
     public string levelName;
 
     private int countDownTime;
-
-    [SerializeField]
-    private MoveWayPoint[] waypoints;
-
-    [SerializeField]
-    private PlayerController player;
-
-    private int currentWayPoint = 0;
-
-    private int levelNumber = 0;
-
     private bool pauseTimer = false;
 
-    [SerializeField]
-    private TargetSpawner[] spawners;
+    [Header("Waypoints & Player")]
+    [SerializeField] private MoveWayPoint[] waypoints;
+    [SerializeField] private PlayerController player;
+    private int currentWayPoint = 0;
 
-    [SerializeField]
-    private LevelWayPoint[] levelWayPoints;
+    [Header("Spawners & Areas")]
+    [SerializeField] private TargetSpawner[] spawners;
+    [SerializeField] private LevelWayPoint[] levelWayPoints;
+    [SerializeField] private int timePerLevelWayPoint;
+    private int spawnerIndex = 0;
+    private int levelAreaIndex = 0;
 
-    [SerializeField]
-    private int timePerLevelWayPoint;
-
-
-    private int levelWayPointIndex = 0;
-
+    // ------------------------------------------------------------------
+    // LEVEL FLOW
+    // ------------------------------------------------------------------
     public void InitializeLevel()
     {
+        Debug.Log($"[LevelManager] === INITIALIZING LEVEL: '{levelName}' ===");
+
         MovePlayer();
         GameInfoController.Instance.levelText.text = levelName;
+
+        Debug.Log($"[LevelManager] Player positioned at waypoint {currentWayPoint} / {waypoints.Length}");
+        Debug.Log($"[LevelManager] Level duration: {duration}s | Spawners: {spawners.Length}");
     }
 
     public void StartLevel()
     {
-        if (spawners.Length > 0)
-        {
-            spawners[levelNumber].StartSpawner();
-        }
+        Debug.Log($"[LevelManager] === STARTING LEVEL: '{levelName}' ===");
+
         countDownTime = duration;
         StartCoroutine(CountdownToStart());
     }
 
-    
-
-IEnumerator CountdownToStart()
-{
-    while (countDownTime >= 0)
+    private IEnumerator CountdownToStart()
     {
-        // Display the countdown
-        GameInfoController.Instance.countDownText.text = countDownTime.ToString();
-
-        // Check if we hit a waypoint interval (and not at start or end)
-        if (timePerLevelWayPoint > 0 &&
-            countDownTime != duration &&
-            countDownTime % timePerLevelWayPoint == 0 &&
-            countDownTime != 0)
+        if (spawners != null && spawners.Length > 0 &&
+            spawnerIndex >= 0 && spawnerIndex < spawners.Length)
         {
-            pauseTimer = true;
-            player.currentWayPoint = levelWayPoints[levelWayPointIndex];
-        }
-
-        // Wait until pauseTimer is false before continuing
-        while (pauseTimer)
-        {
-            yield return null; // waits one frame, keeps checking
-        }
-
-        // Wait for 1 second, then decrement
-        yield return new WaitForSeconds(1f);
-        countDownTime--;
-    }
-
-    // When countdown ends
-    GameManager.Instance.StartNextLevel();
-    GameInfoController.Instance.countDownText.text = "Wait";
-}
-
-
-    private void MovePlayer()
-    {
-        if (waypoints.Length > 0)
-        {
-            player.currentWayPoint = waypoints[currentWayPoint];
+            Debug.Log($"[LevelManager] Starting first spawner (Index {spawnerIndex})...");
+            spawners[spawnerIndex].StartSpawner();
         }
         else
         {
+            Debug.LogWarning($"[LevelManager] No valid spawners configured! Level will still count down.");
+        }
+
+        while (countDownTime > 0)
+        {
+            GameInfoController.Instance.countDownText.text = countDownTime.ToString();
+
+            if (timePerLevelWayPoint > 0 &&
+                countDownTime != duration &&
+                countDownTime % timePerLevelWayPoint == 0)
+            {
+                Debug.Log($"[LevelManager] Time checkpoint reached at {countDownTime}s. Moving to next level waypoint...");
+                pauseTimer = true;
+
+                player.currentWayPoint = levelWayPoints[levelAreaIndex];
+                Debug.Log($"[LevelManager] Player moved to Level WayPoint #{levelAreaIndex} ({levelWayPoints[levelAreaIndex].name})");
+
+                if (spawners != null && spawners.Length > 0)
+                {
+                    spawners[spawnerIndex].KillSpawner();
+                }
+            }
+
+            while (pauseTimer)
+                yield return null;
+
+            yield return new WaitForSeconds(1f);
+            countDownTime--;
+        }
+
+        Debug.Log($"[LevelManager] Level '{levelName}' timer finished. Transitioning...");
+        GameInfoController.Instance.countDownText.text = "Wait";
+        GameManager.Instance.StartNextLevel();
+    }
+
+    // ------------------------------------------------------------------
+    // PLAYER / WAYPOINT CONTROL
+    // ------------------------------------------------------------------
+    private void MovePlayer()
+    {
+        if (waypoints != null && waypoints.Length > 0)
+        {
+            player.currentWayPoint = waypoints[currentWayPoint];
+            Debug.Log($"[LevelManager] Player set to initial waypoint: {waypoints[currentWayPoint].name}");
+        }
+        else
+        {
+            Debug.LogWarning($"[LevelManager] No waypoints found! Starting level immediately.");
             StartLevel();
         }
     }
 
     public MoveWayPoint UpdateNextWayPoint()
     {
-
         currentWayPoint++;
 
-        if (currentWayPoint == waypoints.Length)
+        if (currentWayPoint >= waypoints.Length)
         {
+            Debug.Log($"[LevelManager] Final waypoint reached. Starting level phase.");
             StartLevel();
             return null;
         }
 
+        Debug.Log($"[LevelManager] Advancing to next waypoint: {waypoints[currentWayPoint].name} ({currentWayPoint}/{waypoints.Length})");
         return waypoints[currentWayPoint];
     }
 
+    // ------------------------------------------------------------------
+    // SPAWNER MANAGEMENT
+    // ------------------------------------------------------------------
     public void StartNextSpawner()
     {
-        if (levelNumber == spawners.Length - 1)
+        Debug.Log($"[LevelManager] === Starting Next Spawner ===");
+
+        if (spawners == null || spawners.Length == 0)
         {
-            levelNumber = 0;
-        }
-        else
-        {
-            levelNumber++;
+            Debug.LogWarning($"[LevelManager] No spawners available to start!");
+            return;
         }
 
-        spawners[levelNumber].StartSpawner();
+        spawnerIndex = (spawnerIndex + 1) % spawners.Length;
+
+        Debug.Log($"[LevelManager] Activating Spawner #{spawnerIndex} ({spawners[spawnerIndex].name})");
+        spawners[spawnerIndex].StartSpawner();
     }
 
     public void StopLevel()
     {
+        Debug.LogWarning($"[LevelManager] === STOPPING LEVEL '{levelName}' ===");
 
-        if (spawners.Length > 0)
+        if (spawners != null && spawners.Length > 0)
         {
-            spawners[levelNumber].KillSpawner();
+            Debug.Log($"[LevelManager] Killing current spawner: Index {spawnerIndex}");
+            spawners[spawnerIndex].KillSpawner();
+        }
+        else
+        {
+            Debug.LogWarning($"[LevelManager] No active spawner to stop.");
         }
     }
 
+    // ------------------------------------------------------------------
+    // LEVEL WAYPOINT PROGRESSION
+    // ------------------------------------------------------------------
     public LevelWayPoint GetNextLevelWayPoint()
     {
-        Debug.Log("NEXT");
-        if(levelWayPointIndex == levelWayPoints.Length - 1)
+        if (levelWayPoints == null || levelWayPoints.Length == 0)
         {
+            Debug.LogWarning($"[LevelManager] No level waypoints configured!");
             pauseTimer = false;
             return null;
         }
 
-        if (levelWayPoints[levelWayPointIndex].isTargetSpawnArea)
+        if (levelAreaIndex >= levelWayPoints.Length - 1)
         {
-            levelWayPointIndex++;
+            Debug.Log($"[LevelManager] Final level waypoint reached. Resuming countdown.");
             pauseTimer = false;
             return null;
         }
 
-        levelWayPointIndex++;
-        LevelWayPoint nextWaypoint = levelWayPoints[levelWayPointIndex];
+        levelAreaIndex++;
+
+        LevelWayPoint nextWaypoint = levelWayPoints[levelAreaIndex];
+        Debug.Log($"[LevelManager] Advancing to Level WayPoint #{levelAreaIndex}: {nextWaypoint.name}");
+
+        if (nextWaypoint.isTargetSpawnArea)
+        {
+            Debug.Log($"[LevelManager] Waypoint is a spawn area — resuming timer and skipping direct movement.");
+            pauseTimer = false;
+            return null;
+        }
+
+        pauseTimer = false;
         return nextWaypoint;
-
-
     }
 
+    // ------------------------------------------------------------------
+    // DEBUG UTILITIES
+    // ------------------------------------------------------------------
+    public void LogLevelState()
+    {
+        Debug.Log($"\n[LevelManager] --- STATE SNAPSHOT ---" +
+                  $"\n  Level Name: {levelName}" +
+                  $"\n  Duration: {duration}s" +
+                  $"\n  Countdown: {countDownTime}s" +
+                  $"\n  Current Waypoint: {currentWayPoint}/{waypoints.Length}" +
+                  $"\n  Current Spawner Index: {spawnerIndex}" +
+                  $"\n  Pause Timer: {pauseTimer}" +
+                  $"\n  Level Area Index: {levelAreaIndex}" +
+                  $"\n  Total Spawners: {(spawners != null ? spawners.Length : 0)}" +
+                  $"\n  Total Level WayPoints: {(levelWayPoints != null ? levelWayPoints.Length : 0)}" +
+                  $"\n-----------------------------");
+    }
 }
