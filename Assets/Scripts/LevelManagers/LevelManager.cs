@@ -7,20 +7,23 @@ public class LevelManager : MonoBehaviour
     public int duration;
     public string levelName;
 
-    private int countDownTime;
-    private bool pauseTimer = false;
+    protected private int countDownTime;
+    protected private bool pauseTimer = false;
 
     [Header("Waypoints & Player")]
-    [SerializeField] private MoveWayPoint[] waypoints;
-    [SerializeField] private PlayerController player;
-    private int currentWayPoint = 0;
+    [SerializeField] protected private MoveWayPoint[] waypoints;
+    [SerializeField] protected private PlayerController player;
+    protected private int currentWayPoint = 0;
 
     [Header("Spawners & Areas")]
-    [SerializeField] private TargetSpawner[] spawners;
-    [SerializeField] private LevelWayPoint[] levelWayPoints;
-    [SerializeField] private int timePerLevelWayPoint;
-    private int spawnerIndex = 0;
-    private int levelAreaIndex = 0;
+    [SerializeField] protected private TargetSpawner[] spawners;
+    [SerializeField] protected private LevelWayPoint[] levelWayPoints;
+    [SerializeField] protected private int timePerLevelWayPoint;
+
+    [SerializeField] protected float playerSpeed = 5;
+
+    protected private int spawnerIndex = 0;
+    protected private int levelAreaIndex = 0;
 
     // ------------------------------------------------------------------
     // LEVEL FLOW
@@ -28,15 +31,13 @@ public class LevelManager : MonoBehaviour
     public void InitializeLevel()
     {
         Debug.Log($"[LevelManager] === INITIALIZING LEVEL: '{levelName}' ===");
-
         MovePlayer();
         GameInfoController.Instance.levelText.text = levelName;
-
         Debug.Log($"[LevelManager] Player positioned at waypoint {currentWayPoint} / {waypoints.Length}");
         Debug.Log($"[LevelManager] Level duration: {duration}s | Spawners: {spawners.Length}");
     }
 
-    public void StartLevel()
+    public virtual void StartLevel()
     {
         Debug.Log($"[LevelManager] === STARTING LEVEL: '{levelName}' ===");
 
@@ -44,8 +45,9 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(CountdownToStart());
     }
 
-    private IEnumerator CountdownToStart()
+    protected virtual IEnumerator CountdownToStart()
     {
+        player.speed = playerSpeed;
         if (spawners != null && spawners.Length > 0 &&
             spawnerIndex >= 0 && spawnerIndex < spawners.Length)
         {
@@ -90,6 +92,7 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.StartNextLevel();
     }
 
+
     // ------------------------------------------------------------------
     // PLAYER / WAYPOINT CONTROL
     // ------------------------------------------------------------------
@@ -107,7 +110,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public MoveWayPoint UpdateNextWayPoint()
+    public virtual MoveWayPoint UpdateNextWayPoint()
     {
         currentWayPoint++;
 
@@ -125,7 +128,7 @@ public class LevelManager : MonoBehaviour
     // ------------------------------------------------------------------
     // SPAWNER MANAGEMENT
     // ------------------------------------------------------------------
-    public void StartNextSpawner()
+    public virtual void StartNextSpawner()
     {
         Debug.Log($"[LevelManager] === Starting Next Spawner ===");
 
@@ -141,7 +144,7 @@ public class LevelManager : MonoBehaviour
         spawners[spawnerIndex].StartSpawner();
     }
 
-    public void StopLevel()
+    public virtual void StopLevel()
     {
         Debug.LogWarning($"[LevelManager] === STOPPING LEVEL '{levelName}' ===");
 
@@ -159,7 +162,7 @@ public class LevelManager : MonoBehaviour
     // ------------------------------------------------------------------
     // LEVEL WAYPOINT PROGRESSION
     // ------------------------------------------------------------------
-    public LevelWayPoint GetNextLevelWayPoint()
+    public virtual LevelWayPoint GetNextLevelWayPoint()
     {
         if (levelWayPoints == null || levelWayPoints.Length == 0)
         {
@@ -168,7 +171,7 @@ public class LevelManager : MonoBehaviour
             return null;
         }
 
-        if (levelAreaIndex >= levelWayPoints.Length - 1)
+        if (levelAreaIndex >= levelWayPoints.Length)
         {
             Debug.Log($"[LevelManager] Final level waypoint reached. Resuming countdown.");
             pauseTimer = false;

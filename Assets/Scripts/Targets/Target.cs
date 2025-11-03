@@ -18,7 +18,7 @@ public class Target : MonoBehaviour
 
     private TargetWayPoint currentWayPoint;
 
-    private int speed = 5;
+    public float speed = 5;
 
      private bool hit = false;
 

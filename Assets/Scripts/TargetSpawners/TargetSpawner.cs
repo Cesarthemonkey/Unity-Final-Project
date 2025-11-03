@@ -9,7 +9,7 @@ public abstract class TargetSpawner : MonoBehaviour
     [SerializeField] private Target bonusTarget;
     [SerializeField] private int numberOfBadTargets;
     [SerializeField] private int numberOfBonusTargets;
-
+    [SerializeField] public LevelWayPoint parentLevelWayPoint;
     protected private int targetsPerSpawnWave = 0;
     private bool spawnerActive = false;
 

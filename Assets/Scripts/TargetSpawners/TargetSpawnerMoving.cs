@@ -10,7 +10,7 @@ public class TargetSpawnerMoving : TargetSpawner
     [SerializeField] private GameObject spawnLocation;
     [SerializeField] private TargetWayPoint[] targetWayPoints;
     [SerializeField] private float spawnDelay = 0.5f;
-
+    [SerializeField] private float targetSpeed = 5f;
     private Queue<Target> respawnQueue;
 
     void Start()
@@ -54,6 +54,7 @@ public class TargetSpawnerMoving : TargetSpawner
         {
             Target nextTarget = spawnQueue.Dequeue();
             Target spawnedTarget = Instantiate(nextTarget, spawnLocation.transform.position, spawnLocation.transform.rotation, transform);
+            spawnedTarget.speed = targetSpeed;
             spawnedTarget.SetWayPoint(targetWayPoints[0]);
 
             Debug.Log($"[TargetSpawnerMoving] Spawned '{spawnedTarget.name}' at {spawnLocation.name} → heading to waypoint '{targetWayPoints[0].name}'");

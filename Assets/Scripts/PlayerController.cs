@@ -39,37 +39,50 @@ public class PlayerController : MonoBehaviour
 
         Vector3 direction = (targetPoint - shootPoint.position).normalized;
 
-       Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
+        Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
     }
     public void MoveTowardsWayPoint()
     {
         if (currentWayPoint == null || isFrozen) return;
 
         // Keep player's Y position fixed
+        if (currentWayPoint.playerSpeed > 0)
+        {
+            speed = currentWayPoint.playerSpeed;
+        }
+
+
         Vector3 targetPosition = currentWayPoint.transform.position;
         targetPosition.y = transform.position.y;
 
         // Direction ignoring Y
         Vector3 direction = (targetPosition - transform.position).normalized;
-
-        // Rotate towards the target
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            targetRotation,
-            rotationSpeed * Time.deltaTime
-        );
+
+        if (!currentWayPoint.disableRotation)
+        {
+            // Rotate towards the target
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+
+        }
 
         float angle = Quaternion.Angle(transform.rotation, targetRotation);
 
-        if (angle <= 0)
+        if (angle <= 0 || currentWayPoint.disableRotation)
         {
+            if (!currentWayPoint.disableRotation)
+            {
                 transform.rotation = targetRotation;
-                transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPosition,
-                speed * Time.deltaTime
-            );
+            }
+            transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetPosition,
+            speed * Time.deltaTime
+        );
 
             // Check distance using the flattened position
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
