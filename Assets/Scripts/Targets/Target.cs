@@ -4,10 +4,10 @@ using TMPro;
 public class Target : MonoBehaviour
 {
     [SerializeField]
-    private GameObject DestroyParticle;
+    protected GameObject DestroyParticle;
 
     [SerializeField]
-    private AudioClip[] destroySounds;
+    protected AudioClip[] destroySounds;
 
     [SerializeField]
     private int points;
@@ -21,7 +21,7 @@ public class Target : MonoBehaviour
     public float speed = 5;
 
     private bool hit = false;
-    private float destroyHeight = -1;
+
     void Start()
     {
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
@@ -82,13 +82,22 @@ public class Target : MonoBehaviour
 
     public virtual void HideGameObjects()
     {
-        meshRenderer.enabled = false;
-        meshCollider.enabled = false;
+        if (meshCollider)
+        {
+            meshCollider.enabled = false;
+
+        }
+
+        if (meshRenderer)
+        {
+            meshRenderer.enabled = false;
+
+        }
     }
 
-    private void ShowVFX()
+    virtual protected void ShowVFX()
     {
-        targetAudio.PlayOneShot(destroySounds[Random.Range(0, destroySounds.Length)], 1.0f);
+        targetAudio.PlayOneShot(destroySounds[Random.Range(0, destroySounds.Length - 1)], 1.0f);
         Instantiate(DestroyParticle, transform.position, transform.rotation);
     }
 
@@ -113,6 +122,6 @@ public class Target : MonoBehaviour
         }
     }
 
-        public virtual void UpdateStreak() { }
+    public virtual void UpdateStreak() { }
 
 }
