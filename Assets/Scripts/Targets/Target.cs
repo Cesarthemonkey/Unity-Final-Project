@@ -20,8 +20,8 @@ public class Target : MonoBehaviour
 
     public float speed = 5;
 
-     private bool hit = false;
-
+    private bool hit = false;
+    private float destroyHeight = -1;
     void Start()
     {
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
@@ -112,6 +112,7 @@ public class Target : MonoBehaviour
             currentWayPoint = currentWayPoint.GetNextMoveWayPoint(this);
         }
     }
-    public virtual void UpdateStreak() { }
+
+        public virtual void UpdateStreak() { }
 
 }

@@ -17,12 +17,11 @@ public class MovingLevelManager : LevelManager
 
     override protected IEnumerator CountdownToStart()
     {
-
         while (countDownTime > 0)
         {
             GameInfoController.Instance.countDownText.text = countDownTime.ToString();
 
-                    if (countDownTime == duration)
+            if (countDownTime == duration)
             {
                 yield return null;
          
@@ -60,8 +59,15 @@ public class MovingLevelManager : LevelManager
 
     override public LevelWayPoint GetNextLevelWayPoint()
     {
-        
+
         levelAreaIndex++;
+        
+        if(levelAreaIndex == levelWayPoints.Length)
+        {
+            return null;
+        }
+
+
         LevelWayPoint nextWaypoint = levelWayPoints[levelAreaIndex];
         if (nextWaypoint.isTargetSpawnArea)
         {

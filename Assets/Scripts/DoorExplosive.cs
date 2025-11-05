@@ -10,7 +10,9 @@ public class DoorExplosive : MonoBehaviour
     private ParticleSystem particle;
    public void BlowUp()
     {
-        Instantiate(particle, transform.position, transform.rotation);
+
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+       Instantiate(particle, transform.position, transform.rotation);
         door.SetActive(false);
     }
 }

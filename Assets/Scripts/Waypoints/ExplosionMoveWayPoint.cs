@@ -3,13 +3,14 @@ using UnityEngine;
 public class ExplosionMoveWayPoint : MoveWayPoint
 {
     [SerializeField]
-    private DoorExplosive doorExplosive;
-    private PlayerController playerController;
+    protected DoorExplosive doorExplosive;
+    protected PlayerController playerController;
     void Start()
     {
         parentLevelManager = GetComponentInParent<LevelManager>();
         playerController = FindFirstObjectByType<PlayerController>();
     }
+
     public override MoveWayPoint GetNextMoveWayPoint()
     {
         playerController.Freeze(3f);

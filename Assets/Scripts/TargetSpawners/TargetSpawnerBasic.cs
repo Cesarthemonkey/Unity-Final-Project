@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TargetSpawnerBasic : TargetSpawner
 {
-    [SerializeField] private GameObject[] TargetSpawnLocations;
+    [SerializeField] protected GameObject[] TargetSpawnLocations;
     [SerializeField] private bool RandomSpawns = false;
     [SerializeField] private int numberOfTargetsPerWave = 0;
 
@@ -49,7 +49,7 @@ public class TargetSpawnerBasic : TargetSpawner
         Debug.Log($"[TargetSpawnerBasic] === Wave Spawn Complete ===");
     }
 
-    private void SpawnStandardTargets()
+    protected virtual void SpawnStandardTargets()
     {
         if (TargetSpawnLocations == null || TargetSpawnLocations.Length == 0)
         {

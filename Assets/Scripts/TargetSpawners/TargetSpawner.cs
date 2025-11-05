@@ -103,7 +103,7 @@ public abstract class TargetSpawner : MonoBehaviour
         parentLevelManager.StartNextSpawner();
     }
 
-    private void SpawnNextRoundOfTargets()
+    protected virtual void SpawnNextRoundOfTargets()
     {
         if (spawnerActive && IsOnlyAllGoodTargetsDestroyed())
         {
