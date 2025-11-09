@@ -14,7 +14,7 @@ public class RegularExplosionWayPoint : MoveWayPoint
     [SerializeField] private GameObject[] Debris;
     [SerializeField] private GameObject SmokeSource;
 
-      [SerializeField] private AudioClip boomClip;
+    [SerializeField] private AudioClip boomClip;
     protected PlayerController playerController;
 
     protected AudioSource audioSource;
@@ -42,8 +42,8 @@ public class RegularExplosionWayPoint : MoveWayPoint
             Instantiate(Explosion, ExplosionPoint.transform.position, ExplosionPoint.transform.rotation);
 
         audioSource.PlayOneShot(boomClip);
-        
-        
+
+
         foreach (var item in Debris)
         {
             Instantiate(item, ExplosionPoint.transform.position, item.transform.rotation);
@@ -54,9 +54,12 @@ public class RegularExplosionWayPoint : MoveWayPoint
         Collider[] colliders = Physics.OverlapSphere(explosionPosition, explosionRadius);
         foreach (Collider hit in colliders)
         {
-            Rigidbody rb = hit.GetComponent<Rigidbody>();
-            if (rb != null)
-                rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius, upwardsModifier);
+            if (!hit.CompareTag("Player"))
+            {
+                Rigidbody rb = hit.GetComponent<Rigidbody>();
+                if (rb != null)
+                    rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius, upwardsModifier);
+            }
         }
 
         foreach (var item in Destructurables)

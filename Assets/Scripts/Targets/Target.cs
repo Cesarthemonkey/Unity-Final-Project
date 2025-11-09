@@ -7,10 +7,20 @@ public class Target : MonoBehaviour
     protected GameObject DestroyParticle;
 
     [SerializeField]
+    protected GameObject DeSpawnParticleTransform;
+
+    [SerializeField]
     protected AudioClip[] destroySounds;
 
     [SerializeField]
-    private int points;
+    protected int points;
+
+
+    [SerializeField]
+    protected int hitsToDestroy = 1;
+
+    [SerializeField]
+    protected int totalHits = 0;
     protected MeshRenderer meshRenderer;
     protected MeshCollider meshCollider;
     protected AudioSource targetAudio;
@@ -20,7 +30,7 @@ public class Target : MonoBehaviour
 
     public float speed = 5;
 
-    private bool hit = false;
+    protected bool hit = false;
 
     void Start()
     {
@@ -34,7 +44,7 @@ public class Target : MonoBehaviour
     {
         MoveTowardsWayPoint();
     }
-    void OnTriggerEnter(Collider other)
+     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Projectile"))
         {
@@ -53,12 +63,12 @@ public class Target : MonoBehaviour
         DestroyTarget();
     }
 
-    private void DestroyTarget()
+    protected void DestroyTarget()
     {
         Destroy(gameObject, 1f);
     }
 
-    private void DisplayPoints()
+    protected void DisplayPoints()
     {
         if (points < 0)
         {
