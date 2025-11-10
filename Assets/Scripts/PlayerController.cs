@@ -7,12 +7,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float maxShootDistance = 100f;
 
+    [SerializeField] private AudioClip[] bowSounds;
+
+    private AudioSource audioSource;
     public MoveWayPoint currentWayPoint;
-    public float speed = 5f;
+    public float speed = 3f;
     public float rotationSpeed = 40f;
 
     private bool isFrozen = false;
-
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    } 
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && GameManager.Instance.gameActive)
@@ -28,6 +34,7 @@ public class PlayerController : MonoBehaviour
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         Vector3 targetPoint;
 
+        audioSource.PlayOneShot(bowSounds[Random.Range(0, bowSounds.Length)]);  
         if (Physics.Raycast(ray, out RaycastHit hit, maxShootDistance))
         {
             targetPoint = hit.point;
@@ -46,10 +53,10 @@ public class PlayerController : MonoBehaviour
         if (currentWayPoint == null || isFrozen) return;
 
         // Keep player's Y position fixed
-        if (currentWayPoint.playerSpeed > 0)
-        {
-            speed = currentWayPoint.playerSpeed;
-        }
+        // if (currentWayPoint.playerSpeed > 0)
+        // {
+        //     speed = currentWayPoint.playerSpeed;
+        // }
 
 
         Vector3 targetPosition = currentWayPoint.transform.position;

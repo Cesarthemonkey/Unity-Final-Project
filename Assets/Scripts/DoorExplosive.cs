@@ -5,14 +5,22 @@ public class DoorExplosive : MonoBehaviour
 
     [SerializeField]
     private GameObject door;
-    
+
     [SerializeField]
     private ParticleSystem particle;
-   public void BlowUp()
+    private bool moveDoor;
+    public void BlowUp()
     {
+        moveDoor = true;
 
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-       Instantiate(particle, transform.position, transform.rotation);
         door.SetActive(false);
+    }
+
+    void Update()
+    {
+        if(moveDoor)
+        {
+            
+        }
     }
 }

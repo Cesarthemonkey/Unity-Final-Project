@@ -93,11 +93,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   DestroyParticle: {fileID: 141433446842962269, guid: 60b2ed36435503f49949b5af4f5131b8, type: 3}
+  DeSpawnParticleTransform: {fileID: 0}
   destroySounds:
-  - {fileID: 8300000, guid: 806d73e802c43ad448e9bee38ac19a3e, type: 3}
-  - {fileID: 8300000, guid: 6fad1b248308d0e499a8dca5f29e4ff5, type: 3}
-  - {fileID: 8300000, guid: 31adecff81af0ed49a339f7d59a7ff58, type: 3}
+  - {fileID: 8300000, guid: 3af484adf272e8b41a27db067c3d4853, type: 3}
   points: 10
+  hitsToDestroy: 1
+  totalHits: 0
+  speed: 5
   vasePrefabs:
   - {fileID: 1763383757117637671}
   - {fileID: 9117916796029228109}

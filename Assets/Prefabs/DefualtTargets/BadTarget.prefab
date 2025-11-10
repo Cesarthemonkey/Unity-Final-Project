@@ -220,14 +220,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   DestroyParticle: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
+  DeSpawnParticleTransform: {fileID: 0}
   destroySounds:
-  - {fileID: 8300000, guid: c01bbab8442e45146be860df82582360, type: 3}
-  - {fileID: 8300000, guid: 879e730a6ca97ae4898f59711107f5eb, type: 3}
-  - {fileID: 8300000, guid: 633ef7ed447959c4b9b34971d144ab6f, type: 3}
-  - {fileID: 8300000, guid: 21d73725c2ba0804f97ad566a46cbd13, type: 3}
-  - {fileID: 8300000, guid: da30ba99d8a9a794cac0807e018c6159, type: 3}
-  - {fileID: 8300000, guid: 7acc8ace4a733cc4eb94910f5e1a84ed, type: 3}
+  - {fileID: 8300000, guid: 704403b208543614580d6810d73aeb51, type: 3}
   points: -50
+  hitsToDestroy: 1
+  totalHits: 0
+  speed: 5
   image: {fileID: 1830211232297557071}
 --- !u!4 &6631689207435611410 stripped
 Transform:

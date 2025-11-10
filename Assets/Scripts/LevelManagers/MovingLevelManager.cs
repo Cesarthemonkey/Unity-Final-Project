@@ -9,7 +9,7 @@ public class MovingLevelManager : LevelManager
     override public void StartLevel()
     {
         Debug.Log($"[LevelManager - Moving] === STARTING LEVEL: '{levelName}' ===");
-
+        GameManager.Instance.isInCutScene = false;
         countDownTime = duration;
         player.speed = playerSpeed;
         StartCoroutine(CountdownToStart());
@@ -27,8 +27,6 @@ public class MovingLevelManager : LevelManager
          
                 player.currentWayPoint = levelWayPoints[levelAreaIndex];
             }
-
-
 
             while (pauseTimer)
                 yield return null;

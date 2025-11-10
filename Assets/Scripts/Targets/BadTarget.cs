@@ -17,6 +17,8 @@ public class BadTarget : Target
     
     public override void UpdateStreak()
     {
+        GameManager.Instance.PlayStreakBreak();
+        CameraManager.Instance.ShakeCamera();
         GameManager.Instance.resetStreak();
     }
 }

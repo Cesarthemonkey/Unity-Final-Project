@@ -6,7 +6,7 @@ public class MoveWayPoint : MonoBehaviour
 
     public bool disableRotation = false;
 
-    public float playerSpeed = 5;
+    public float playerSpeed = 3;
 
     void Start()
     {

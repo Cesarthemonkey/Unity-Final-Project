@@ -21,15 +21,22 @@ public class LevelManager : MonoBehaviour
     [SerializeField] protected private int timePerLevelWayPoint;
 
     [SerializeField] protected float playerSpeed = 5;
-
+    protected AudioSource audioSource;
+     [SerializeField] protected AudioClip horn;
     protected private int spawnerIndex = 0;
     protected private int levelAreaIndex = 0;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     // ------------------------------------------------------------------
     // LEVEL FLOW
     // ------------------------------------------------------------------
     public void InitializeLevel()
     {
+        GameManager.Instance.isInCutScene = true;
         Debug.Log($"[LevelManager] === INITIALIZING LEVEL: '{levelName}' ===");
         MovePlayer();
         GameInfoController.Instance.levelText.text = levelName;
@@ -40,14 +47,15 @@ public class LevelManager : MonoBehaviour
     public virtual void StartLevel()
     {
         Debug.Log($"[LevelManager] === STARTING LEVEL: '{levelName}' ===");
-
+        GameManager.Instance.isInCutScene = false;
         countDownTime = duration;
+        StartCoroutine(StartLevelSFX());
         StartCoroutine(CountdownToStart());
     }
 
     protected virtual IEnumerator CountdownToStart()
     {
-        player.speed = playerSpeed;
+        //player.speed = playerSpeed;
         if (spawners != null && spawners.Length > 0 &&
             spawnerIndex >= 0 && spawnerIndex < spawners.Length)
         {
@@ -211,5 +219,14 @@ public class LevelManager : MonoBehaviour
                   $"\n  Total Spawners: {(spawners != null ? spawners.Length : 0)}" +
                   $"\n  Total Level WayPoints: {(levelWayPoints != null ? levelWayPoints.Length : 0)}" +
                   $"\n-----------------------------");
+    }
+
+    protected IEnumerator StartLevelSFX()
+    {
+        audioSource.PlayOneShot(horn);
+        GameInfoController.Instance.centerCountDown.gameObject.SetActive(true);
+        GameInfoController.Instance.centerCountDown.text = "GO!";
+        yield return new WaitForSeconds(1f);
+        GameInfoController.Instance.centerCountDown.gameObject.SetActive(false);
     }
 }
