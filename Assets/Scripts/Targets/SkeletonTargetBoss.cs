@@ -62,7 +62,7 @@ public class SkeletonTargetBoss : SkeletonTarget
                 item.SetActive(true);
         }
         animator.SetBool("Scream", true);
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(.65f);
 
         audioSource.PlayOneShot(scream);
         CameraManager.Instance.ShakeCamera();
