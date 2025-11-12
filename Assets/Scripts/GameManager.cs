@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
         if (score > MainManager.Instance.HighScore)
         {
             MainManager.Instance.HighScore = score;
+            MainManager.Instance.SaveHighScore();
         }
         
         gameActive = false;

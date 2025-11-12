@@ -20,6 +20,11 @@ public class MainManager : MonoBehaviour
         LoadHighScore();
     }
 
+    void Start()
+    {
+        LoadHighScore();
+    }
+
     [System.Serializable]
     class SaveData
     {

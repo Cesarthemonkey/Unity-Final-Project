@@ -144,6 +144,8 @@ public class SkeletonTarget : Target
 
     protected IEnumerator SkeletonAttacksPlayer()
     {
+        hitbox.enabled = false;
+
         navMeshAgent.isStopped = true;
         animator.SetBool("Attack", true);
         yield return new WaitForSeconds(0.75f);
@@ -154,7 +156,6 @@ public class SkeletonTarget : Target
         audioSource.PlayOneShot(swordSounds[Random.Range(0, swordSounds.Length)]);
         GameManager.Instance.resetStreak();
         GameManager.Instance.updateScore(points * -1);
-        hitbox.enabled = false;
         NegativeScoreText.GetComponent<TMP_Text>().text = (points * -1).ToString();
         NegativeScoreText.gameObject.SetActive(true);
         CameraManager.Instance.ShakeCamera();
