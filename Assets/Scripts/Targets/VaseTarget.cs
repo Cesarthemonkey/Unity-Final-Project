@@ -16,6 +16,7 @@ public class VaseTarget : Target
         boxCollider = gameObject.GetComponent<BoxCollider>();
         targetAudio = gameObject.GetComponent<AudioSource>();
         ScoreText = transform.Find("ScoreText").gameObject;
+        player = FindFirstObjectByType<PlayerController>();
 
         selectedVase = vasePrefabs[Random.Range(0, vasePrefabs.Length)];
         selectedVase.SetActive(true);

@@ -3,16 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class MenuUIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] private GameObject HighScore;
     void Start()
     {
-
+        MainManager.Instance.LoadHighScore();
+        HighScore.GetComponent<TMP_Text>().text = MainManager.Instance.HighScore.ToString("N0");
     }
 
     // Update is called once per frame
@@ -29,6 +33,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void Exit()
     {
+        MainManager.Instance.SaveHighScore();
 
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();

@@ -127,9 +127,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   DestroyParticle: {fileID: 141433446842962269, guid: 60b2ed36435503f49949b5af4f5131b8, type: 3}
+  DeSpawnParticleTransform: {fileID: 0}
   destroySounds:
-  - {fileID: 8300000, guid: c01bbab8442e45146be860df82582360, type: 3}
+  - {fileID: 8300000, guid: fafa94105fd0b8a48864f43975ee1433, type: 3}
   points: 30
+  hitsToDestroy: 1
+  totalHits: 0
+  speed: 5
 --- !u!82 &5032622573821757759
 AudioSource:
   m_ObjectHideFlags: 0

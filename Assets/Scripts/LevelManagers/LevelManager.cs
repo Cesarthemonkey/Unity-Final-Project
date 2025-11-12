@@ -6,9 +6,10 @@ public class LevelManager : MonoBehaviour
     [Header("Level Settings")]
     public int duration;
     public string levelName;
-
+    public bool isFirstLevel = false;
+    public int startTime = 5;
     protected private int countDownTime;
-    protected private bool pauseTimer = false;
+    public bool pauseTimer = false;
 
     [Header("Waypoints & Player")]
     [SerializeField] protected private MoveWayPoint[] waypoints;
@@ -22,7 +23,9 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] protected float playerSpeed = 5;
     protected AudioSource audioSource;
-     [SerializeField] protected AudioClip horn;
+    [SerializeField] protected AudioClip horn;
+    [SerializeField] protected AudioClip spawnSound;
+
     protected private int spawnerIndex = 0;
     protected private int levelAreaIndex = 0;
 
@@ -49,13 +52,52 @@ public class LevelManager : MonoBehaviour
         Debug.Log($"[LevelManager] === STARTING LEVEL: '{levelName}' ===");
         GameManager.Instance.isInCutScene = false;
         countDownTime = duration;
-        StartCoroutine(StartLevelSFX());
         StartCoroutine(CountdownToStart());
+
+        // StartCoroutine(StartLevelSFX());
     }
 
     protected virtual IEnumerator CountdownToStart()
     {
-        //player.speed = playerSpeed;
+        if (isFirstLevel)
+            yield return StartCoroutine(DoStartCountdown());
+
+        yield return StartCoroutine(DoLevelCountdown());
+    }
+
+    protected virtual IEnumerator DoStartCountdown()
+    {
+        GameManager.Instance.isInCutScene = true;
+        GameManager.Instance.gameActive = false;
+
+        GameInfoController.Instance.centerCountDown.gameObject.SetActive(true);
+        GameInfoController.Instance.centerCountDown.text = startTime.ToString();
+
+        while (startTime > 0)
+        {
+            GameInfoController.Instance.centerCountDown.text = startTime.ToString();
+            yield return new WaitForSeconds(1f);
+            startTime--;
+        }
+
+        GameInfoController.Instance.centerCountDown.text = "GO!";
+        yield return new WaitForSeconds(1f);
+        GameInfoController.Instance.centerCountDown.gameObject.SetActive(false);
+        GameManager.Instance.isInCutScene = false;
+        GameManager.Instance.gameActive = true;
+
+
+    }
+
+    protected virtual IEnumerator DoLevelCountdown()
+    {
+        if (!isFirstLevel)
+        {
+            yield return new WaitForSeconds(1f);
+            audioSource.PlayOneShot(horn);
+
+        }
+
         if (spawners != null && spawners.Length > 0 &&
             spawnerIndex >= 0 && spawnerIndex < spawners.Length)
         {
@@ -99,7 +141,6 @@ public class LevelManager : MonoBehaviour
         GameInfoController.Instance.countDownText.text = "Wait";
         GameManager.Instance.StartNextLevel();
     }
-
 
     // ------------------------------------------------------------------
     // PLAYER / WAYPOINT CONTROL
@@ -228,5 +269,10 @@ public class LevelManager : MonoBehaviour
         GameInfoController.Instance.centerCountDown.text = "GO!";
         yield return new WaitForSeconds(1f);
         GameInfoController.Instance.centerCountDown.gameObject.SetActive(false);
+    }
+
+    public void PlaySpawnSound()
+    {
+        audioSource.PlayOneShot(spawnSound);
     }
 }

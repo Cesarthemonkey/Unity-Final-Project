@@ -42,7 +42,7 @@ public class RegularExplosionWayPoint : MoveWayPoint
             Instantiate(Explosion, ExplosionPoint.transform.position, ExplosionPoint.transform.rotation);
 
         audioSource.PlayOneShot(boomClip);
-
+        CameraManager.Instance.ShakeCamera();
 
         foreach (var item in Debris)
         {

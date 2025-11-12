@@ -52,13 +52,6 @@ public class PlayerController : MonoBehaviour
     {
         if (currentWayPoint == null || isFrozen) return;
 
-        // Keep player's Y position fixed
-        // if (currentWayPoint.playerSpeed > 0)
-        // {
-        //     speed = currentWayPoint.playerSpeed;
-        // }
-
-
         Vector3 targetPosition = currentWayPoint.transform.position;
         targetPosition.y = transform.position.y;
 

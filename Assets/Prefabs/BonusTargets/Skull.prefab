@@ -128,9 +128,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Target
   DestroyParticle: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
+  DeSpawnParticleTransform: {fileID: 0}
   destroySounds:
-  - {fileID: 8300000, guid: c01bbab8442e45146be860df82582360, type: 3}
+  - {fileID: 8300000, guid: cc411d859d2d7b3438db73da4a925f78, type: 3}
   points: 10
+  hitsToDestroy: 1
+  totalHits: 0
+  speed: 5
 --- !u!82 &5209397748590564546
 AudioSource:
   m_ObjectHideFlags: 0

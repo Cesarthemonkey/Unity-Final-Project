@@ -6,6 +6,7 @@ public class DummyTarget : Target
 
     void Start()
     {
+        player = FindFirstObjectByType<PlayerController>();
         boxCollider = gameObject.GetComponent<BoxCollider>();
         targetAudio = gameObject.GetComponent<AudioSource>();
         meshRenderer = gameObject.GetComponent<MeshRenderer>();

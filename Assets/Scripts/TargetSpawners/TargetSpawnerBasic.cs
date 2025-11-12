@@ -37,6 +37,7 @@ public class TargetSpawnerBasic : TargetSpawner
 
         if (RandomSpawns)
         {
+
             Debug.Log($"[TargetSpawnerBasic] Using RANDOM spawn pattern for this wave.");
             SpawnRandomTargets();
         }
@@ -51,6 +52,8 @@ public class TargetSpawnerBasic : TargetSpawner
 
     protected virtual void SpawnStandardTargets()
     {
+                parentLevelManager.PlaySpawnSound();
+
         if (TargetSpawnLocations == null || TargetSpawnLocations.Length == 0)
         {
             Debug.LogWarning($"[TargetSpawnerBasic] No spawn locations assigned! Aborting standard spawn.");

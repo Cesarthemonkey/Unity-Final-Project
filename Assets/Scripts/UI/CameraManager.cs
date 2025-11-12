@@ -21,15 +21,11 @@ public class CameraManager : MonoBehaviour
         Instance = this;
     }
 
-    void Update()
-    {
-
-    }
+    void Update(){}
 
     public void ShakeCamera()
     {
         shake = true;
-
         StartCoroutine(Shaking());
     }
 
@@ -50,7 +46,6 @@ public class CameraManager : MonoBehaviour
         shake = false;
         transform.position = startPosition;
     }
-
 
     void LateUpdate()
     {

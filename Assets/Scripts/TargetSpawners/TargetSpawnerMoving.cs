@@ -117,6 +117,8 @@ public class TargetSpawnerMoving : TargetSpawner
 
     private IEnumerator RespawnTargetsEveryXSeconds()
     {
+        parentLevelManager.PlaySpawnSound();
+
         Queue<Target> tempQueue = respawnQueue;
         respawnQueue = new Queue<Target>();
 

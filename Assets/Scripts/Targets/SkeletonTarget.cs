@@ -1,21 +1,28 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class SkeletonTarget : Target
 {
+    protected AudioSource audioSource;
+    [SerializeField] protected AudioClip[] hitSounds;
+    [SerializeField] protected AudioClip[] swordSounds;
+    [SerializeField] protected AudioClip[] swordSwishSounds;
     [SerializeField] protected PlayerController player;
     [SerializeField] protected GameObject[] gameObjects;
     [SerializeField] protected GameObject spawnParticlePrefab;
     [SerializeField] protected GameObject spawnParticleTransform;
     [SerializeField] protected GameObject[] weapons;
-
+    [SerializeField] protected GameObject NegativeScoreText;
     protected BoxCollider hitbox;
 
     [SerializeField] protected float enemySpeed;
     [SerializeField] protected float spawnTime;
     protected Animator animator;
     protected NavMeshAgent navMeshAgent;
+
+    private bool moving = false;
 
     private void Awake()
     {
@@ -25,6 +32,9 @@ public class SkeletonTarget : Target
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        player = FindFirstObjectByType<PlayerController>();
+
         hitbox = GetComponent<BoxCollider>();
         hitbox.enabled = false;
 
@@ -41,11 +51,12 @@ public class SkeletonTarget : Target
         meshCollider = GetComponent<MeshCollider>();
         targetAudio = GetComponent<AudioSource>();
         ScoreText = transform.Find("ScoreText").gameObject;
+        moving = true;
     }
 
     private void Update()
     {
-        if (player == null) return;
+        if (player == null || !moving) return;
 
         navMeshAgent.destination = player.transform.position;
 
@@ -55,7 +66,6 @@ public class SkeletonTarget : Target
 
     protected override void ShowVFX()
     {
-        targetAudio.PlayOneShot(destroySounds[Random.Range(0, destroySounds.Length)], 1.0f);
         Instantiate(DestroyParticle, transform.position, DestroyParticle.transform.rotation);
     }
 
@@ -68,7 +78,7 @@ public class SkeletonTarget : Target
         }
     }
 
-    protected IEnumerator SpawnSkeleton()
+    virtual protected IEnumerator SpawnSkeleton()
     {
         Vector3 spawnPos = spawnParticleTransform.transform.position;
         spawnPos.y -= 1f;
@@ -88,7 +98,6 @@ public class SkeletonTarget : Target
                 item.SetActive(true);
         }
 
-
         navMeshAgent.speed = enemySpeed;
         hitbox.enabled = true;
 
@@ -96,6 +105,7 @@ public class SkeletonTarget : Target
 
     override public void HitTarget()
     {
+        audioSource.PlayOneShot(hitSounds[Random.Range(0, hitSounds.Length)]);
         totalHits++;
         if (totalHits < hitsToDestroy)
         {
@@ -127,22 +137,35 @@ public class SkeletonTarget : Target
 
         if (other.CompareTag("Player"))
         {
+            moving = false;
             StartCoroutine(SkeletonAttacksPlayer());
         }
     }
 
     protected IEnumerator SkeletonAttacksPlayer()
     {
+        navMeshAgent.isStopped = true;
         animator.SetBool("Attack", true);
-        navMeshAgent.speed = 0;
+        yield return new WaitForSeconds(0.75f);
+
+        audioSource.PlayOneShot(swordSwishSounds[Random.Range(0, swordSwishSounds.Length)]);
+
+        yield return new WaitForSeconds(0.35f);
+        audioSource.PlayOneShot(swordSounds[Random.Range(0, swordSounds.Length)]);
         GameManager.Instance.resetStreak();
         GameManager.Instance.updateScore(points * -1);
         hitbox.enabled = false;
+        NegativeScoreText.GetComponent<TMP_Text>().text = (points * -1).ToString();
+        NegativeScoreText.gameObject.SetActive(true);
+        CameraManager.Instance.ShakeCamera();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+
+        animator.SetBool("Attack", false);
+        navMeshAgent.isStopped = false;
+
         DeSpawnTarget();
     }
-
 
     private void DeSpawnTarget()
     {

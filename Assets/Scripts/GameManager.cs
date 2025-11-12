@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip error;
 
     private AudioSource audioSource;
-    private GameObject crossHair;
+       [SerializeField] private GameObject crossHair;
     public static GameManager Instance { get; private set; }
 
     public int score;
@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
         level = 0;
         score = 0;
         streak = 0;
-        StartCoroutine(InitializeGame());
+        StartCoroutine(StartGame());
+
     }
 
     void Update()
@@ -102,30 +103,27 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
+
+        if (score > MainManager.Instance.HighScore)
+        {
+            MainManager.Instance.HighScore = score;
+        }
+        
         gameActive = false;
         GameInfoController.Instance.gameObject.SetActive(false);
         gameOverScreen.SetActive(true);
         crossHair.SetActive(false);
     }
 
-    IEnumerator InitializeGame()
+
+    protected virtual IEnumerator StartGame()
     {
-        GameInfoController.Instance.centerCountDown.gameObject.SetActive(true);
-        GameInfoController.Instance.centerCountDown.text = startTime.ToString();
 
-        while (startTime > 0)
-        {
-            GameInfoController.Instance.centerCountDown.text = startTime.ToString();
-            yield return new WaitForSeconds(1f);
-
-            startTime--;
-        }
-        GameInfoController.Instance.centerCountDown.text = "GO!";
-        yield return new WaitForSeconds(1f);
-        gameActive = true;
-        GameInfoController.Instance.centerCountDown.gameObject.SetActive(false);
+        isInCutScene = true;
+        yield return new WaitForSeconds(3f);
 
         levels[level].InitializeLevel();
     }
+
 
 }

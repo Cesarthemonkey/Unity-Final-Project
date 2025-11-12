@@ -32,8 +32,11 @@ public class Target : MonoBehaviour
 
     protected bool hit = false;
 
+    protected PlayerController player;
+
     void Start()
     {
+        player = FindFirstObjectByType<PlayerController>();
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
         meshCollider = gameObject.GetComponent<MeshCollider>();
         targetAudio = gameObject.GetComponent<AudioSource>();
@@ -70,24 +73,33 @@ public class Target : MonoBehaviour
 
     protected void DisplayPoints()
     {
+        TMP_Text textComponent = ScoreText.GetComponent<TMP_Text>();
+
         if (points < 0)
         {
-            ScoreText.GetComponent<TMP_Text>().text = points.ToString();
+            textComponent.text = points.ToString();
         }
         else
         {
-
             if (GameManager.Instance.streak > 1)
             {
-                ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString() + " x" + GameManager.Instance.streak.ToString();
+                textComponent.text = "+" + points.ToString() + " x" + GameManager.Instance.streak.ToString();
             }
             else
             {
-                ScoreText.GetComponent<TMP_Text>().text = '+' + points.ToString();
+                textComponent.text = "+" + points.ToString();
             }
-
         }
+
         ScoreText.SetActive(true);
+
+        // Make the score text face the player
+        if (player != null)
+        {
+            // Face the player, but keep upright if needed
+            Vector3 direction = (ScoreText.transform.position - player.transform.position).normalized;
+            ScoreText.transform.forward = direction;
+        }
     }
 
     public virtual void HideGameObjects()
